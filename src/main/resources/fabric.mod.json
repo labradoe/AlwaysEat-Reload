@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "always_eat",
+  "version": "${version}",
+
+  "name": "AlwaysEat",
+  "description": "Makes all food eatable even when you are full",
+  "description": "",
+  "authors": [
+    "Mirkiri"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/always_eat"
+  },
+
+  "license": "GNU General Public License Version 3",
+  "icon": "assets/always_eat/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.mirkiri.alwayseat.AlwaysEatMod"
+    ],
+    "modmenu": [
+      "net.mirkiri.alwayseat.config.ModMenuConfig"
+    ]
+  },
+  "mixins": [
+    "always_eat.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.13.3",
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "java": ">=17"
+  }
+}
