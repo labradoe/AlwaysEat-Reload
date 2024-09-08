@@ -2,11 +2,12 @@ package net.mirkiri.alwayseat;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
-import net.fabricmc.api.ModInitializer;
-import net.minecraft.item.*;
-import net.minecraft.util.registry.Registry;
-import net.mirkiri.alwayseat.config.AlwaysEatConfig;
+import net.minecraft.registry.Registries;
 import net.mirkiri.alwayseat.mixin.FoodComponentMixin;
+import net.mirkiri.alwayseat.config.AlwaysEatConfig;
+import net.fabricmc.api.ModInitializer;
+
+import net.minecraft.item.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,27 +15,29 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class AlwaysEatMod implements ModInitializer {
-	public static final String MODID = "always_eat";
+	public static final String MOD_ID = "alwayseat";
 
-	public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
+	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	private static final HashMap<Item, Boolean> defaultValue = new HashMap<>(39);
+	static HashMap<Item, Boolean> defaultValue = new HashMap<>(39);
 
 	@Override
 	public void onInitialize() {
+
 		AutoConfig.register(AlwaysEatConfig.class, JanksonConfigSerializer::new);
 		updateFoodItems();
 	}
 
 	public static void updateFoodItems() {
-		for (Item item: Registry.ITEM) {
+
+		for (Item item : Registries.ITEM) {
 			FoodComponentMixin food = (FoodComponentMixin) item.getFoodComponent();
 			if (food != null) {
 				if (!defaultValue.containsKey(item)) {
 					defaultValue.put(item, food.getAlwaysEdible());
 				}
 
-				String registryName = Objects.requireNonNull(Registry.ITEM.getId(item).toString());
+				String registryName = Objects.requireNonNull(Registries.ITEM.getId(item).toString());
 
 				// In blacklist mode all items except the ones in the list will be set to true
 				if (AlwaysEatConfig.getConfig().MODE.equals(AlwaysEatConfig.Mode.BLACKLIST.toString())) {
@@ -59,5 +62,4 @@ public class AlwaysEatMod implements ModInitializer {
 			}
 		}
 	}
-
 }
